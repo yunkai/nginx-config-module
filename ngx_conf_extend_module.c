@@ -111,8 +111,9 @@ ngx_conf_pattern_tree_handler(ngx_tree_ctx_t *ctx, ngx_str_t *name)
     file.data = n;
     file.len = len + pctx->pattern.len;
 
-    if (ngx_conf_parse_pattern_file(pctx->conf, &file) != NGX_CONF_OK)
+    if (ngx_conf_parse_pattern_file(pctx->conf, &file) != NGX_CONF_OK) {
         return NGX_ERROR;
+    }
 
     return NGX_OK;
 }
@@ -126,6 +127,10 @@ ngx_conf_parse_pattern_tree(ngx_conf_t *cf, ngx_str_t *pattern)
     ngx_tree_ctx_t           ctx;
     ngx_conf_pattern_ctx_t   pctx;
 
+
+    if (ngx_conf_parse_pattern_file(cf, pattern) != NGX_CONF_OK) {
+        return NGX_CONF_ERROR;
+    }
 
     p = pattern->data;
     last = p + pattern->len - 1;
